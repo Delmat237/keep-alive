@@ -1,0 +1,22 @@
+{
+  "name": "keep-alive",
+  "version": "1.0.0",
+  "description": "Service de ping périodique pour maintenir les applications actives",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "dev": "vercel dev",
+    "build": "echo 'No build step needed'",
+    "start": "vercel --prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {
+    "vercel": "^48.0.3"
+  }
+}
