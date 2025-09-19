@@ -217,7 +217,7 @@ sequenceDiagram
 
 ### **Méthode 1 : Déploiement Direct (Recommandée)**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/votre-username/keep-alive-service)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Delmat237/keep-alive)
 
 1. **Cliquer** sur le bouton "Deploy with Vercel"
 2. **Configurer** Vercel KV database
@@ -228,8 +228,8 @@ sequenceDiagram
 
 ```bash
 # 1. Cloner le repository
-git clone https://github.com/votre-username/keep-alive-service.git
-cd keep-alive-service
+git clone https://github.com/Delmat237/keep-alive.git
+cd keep-alive
 
 # 2. Installer les dépendances
 npm install
@@ -247,7 +247,7 @@ npm run deploy
 ### **Structure du Projet**
 
 ```
-keep-alive-service/
+keep-alive/
 ├── 📁 public/                 # Interface utilisateur
 │   ├── index.html            # Page principale
 │   ├── styles.css            # Styles CSS
@@ -269,7 +269,7 @@ keep-alive-service/
 
 #### **1. Accéder à l'Interface**
 ```
-https://your-keep-alive-service.vercel.app
+https://keep-alive.vercel.app
 ```
 
 #### **2. Ajouter un Service**
