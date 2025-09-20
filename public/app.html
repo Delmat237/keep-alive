@@ -3,78 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keep Alive Services</title>
+    <title>Application - Keep Alive Services</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Page de Login -->
-    <div id="loginPage" class="auth-page active">
-        <div class="auth-container">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <h1><i class="fas fa-heartbeat"></i> Keep-Alive Service </h1>
-                    <p>Professional Website Monitoring Platform</p>
-                </div>
-                
-                <form id="loginForm" class="auth-form">
-                    <div class="form-group">
-                        <label for="loginEmail">Email</label>
-                        <input type="email" id="loginEmail" placeholder="votre@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Mot de passe</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-full">Se connecter</button>
-                </form>
-                
-                <div class="auth-footer">
-                    <p>Pas de compte ? <a href="#" id="showRegister">Créer un compte</a></p>
-                    <p><a href="#" id="showForgot">Mot de passe oublié ?</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Page d'Inscription -->
-    <div id="registerPage" class="auth-page">
-        <div class="auth-container">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <h1><i class="fas fa-heartbeat"></i> Créer un compte</h1>
-                    <p>Commencez à monitorer vos services</p>
-                </div>
-                
-                <form id="registerForm" class="auth-form">
-                    <div class="form-group">
-                        <label for="registerName">Nom complet</label>
-                        <input type="text" id="registerName" placeholder="Delmat L" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="registerEmail">Email</label>
-                        <input type="email" id="registerEmail" placeholder="votre@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="registerPassword">Mot de passe</label>
-                        <input type="password" id="registerPassword" placeholder="••••••••" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="registerConfirm">Confirmer le mot de passe</label>
-                        <input type="password" id="registerConfirm" placeholder="••••••••" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-full">Créer le compte</button>
-                </form>
-                
-                <div class="auth-footer">
-                    <p>Déjà un compte ? <a href="#" id="showLogin">Se connecter</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Application Principale -->
-    <div id="mainApp" class="main-app">
+    <div id="mainApp" class="main-app active">
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <div class="sidebar-header">
@@ -93,25 +27,25 @@
             
             <ul class="nav-menu">
                 <li class="nav-item active">
-                    <a href="#" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="/app?section=dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" data-page="monitors"><i class="fas fa-desktop"></i> Monitors</a>
+                    <a href="/app?section=monitors"><i class="fas fa-desktop"></i> Monitors</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" data-page="status-pages"><i class="fas fa-globe"></i> Status Pages</a>
+                    <a href="/app?section=status-pages"><i class="fas fa-globe"></i> Status Pages</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" data-page="incidents"><i class="fas fa-exclamation-triangle"></i> Incidents</a>
+                    <a href="/app?section=incidents"><i class="fas fa-exclamation-triangle"></i> Incidents</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" data-page="alerts"><i class="fas fa-bell"></i> Alert Contacts</a>
+                    <a href="/app?section=alerts"><i class="fas fa-bell"></i> Alert Contacts</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" data-page="integrations"><i class="fas fa-plug"></i> Integrations</a>
+                    <a href="/app?section=integrations"><i class="fas fa-plug"></i> Integrations</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="/app?section=settings"><i class="fas fa-cog"></i> Settings</a>
                 </li>
             </ul>
             
@@ -298,6 +232,54 @@
                 </div>
             </div>
 
+            <!-- Incidents Page -->
+            <div id="incidentsPage" class="content-page">
+                <div class="page-container">
+                    <div class="page-header">
+                        <h2>Incidents</h2>
+                    </div>
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle fa-3x"></i>
+                        <h3>Aucun incident</h3>
+                        <p>Aucun incident signalé pour le moment</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts Page -->
+            <div id="alertsPage" class="content-page">
+                <div class="page-container">
+                    <div class="page-header">
+                        <h2>Alert Contacts</h2>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Ajouter un contact
+                        </button>
+                    </div>
+                    <div class="empty-state">
+                        <i class="fas fa-bell fa-3x"></i>
+                        <h3>Aucun contact d'alerte</h3>
+                        <p>Ajoutez des contacts pour recevoir des notifications</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integrations Page -->
+            <div id="integrationsPage" class="content-page">
+                <div class="page-container">
+                    <div class="page-header">
+                        <h2>Intégrations</h2>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Ajouter une intégration
+                        </button>
+                    </div>
+                    <div class="empty-state">
+                        <i class="fas fa-plug fa-3x"></i>
+                        <h3>Aucune intégration</h3>
+                        <p>Connectez des services comme Slack ou Discord</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Settings Page -->
             <div id="settingsPage" class="content-page">
                 <div class="page-container">
@@ -330,61 +312,86 @@
                                 <button type="submit" class="btn btn-primary">Sauvegarder</button>
                             </form>
                         </div>
+                        <div id="notificationsSettings" class="settings-panel">
+                            <h3>Notifications</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label><input type="checkbox" id="emailNotifications"> Activer les notifications par email</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                            </form>
+                        </div>
+                        <div id="billingSettings" class="settings-panel">
+                            <h3>Facturation</h3>
+                            <p>Aucune information de facturation configurée</p>
+                        </div>
+                        <div id="securitySettings" class="settings-panel">
+                            <h3>Sécurité</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>Nouveau mot de passe</label>
+                                    <input type="password" id="newPassword" placeholder="••••••••">
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirmer le mot de passe</label>
+                                    <input type="password" id="confirmNewPassword" placeholder="••••••••">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
-    </div>
 
-    <!-- Modal - Nouveau Monitor -->
-    <div id="monitorModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Nouveau Monitor</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <form id="monitorForm" class="modal-body">
-                <div class="form-group">
-                    <label>Nom du monitor</label>
-                    <input type="text" id="monitorName" placeholder="Ex: Mon site web" required>
+        <!-- Modal - Nouveau Monitor -->
+        <div id="monitorModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Nouveau Monitor</h3>
+                    <button class="modal-close">&times;</button>
                 </div>
-                <div class="form-group">
-                    <label>URL à surveiller</label>
-                    <input type="url" id="monitorUrl" placeholder="https://example.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Type de monitor</label>
-                    <select id="monitorType">
-                        <option value="http">HTTP(s)</option>
-                        <option value="ping">Ping</option>
-                        <option value="port">Port</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Intervalle de vérification</label>
-                    <select id="monitorInterval">
-                        <option value="1">1 minute</option>
-                        <option value="5" selected>5 minutes</option>
-                        <option value="10">10 minutes</option>
-                        <option value="30">30 minutes</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Contacts d'alerte</label>
-                    <div class="checkbox-group" id="alertContacts">
-                        <label><input type="checkbox" value="email"> Email principal</label>
+                <form id="monitorForm" class="modal-body">
+                    <div class="form-group">
+                        <label>Nom du monitor</label>
+                        <input type="text" id="monitorName" placeholder="Ex: Mon site web" required>
                     </div>
+                    <div class="form-group">
+                        <label>URL à surveiller</label>
+                        <input type="url" id="monitorUrl" placeholder="https://example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type de monitor</label>
+                        <select id="monitorType">
+                            <option value="http">HTTP(s)</option>
+                            <option value="ping">Ping</option>
+                            <option value="port">Port</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Intervalle de vérification</label>
+                        <select id="monitorInterval">
+                            <option value="1">1 minute</option>
+                            <option value="5" selected>5 minutes</option>
+                            <option value="10">10 minutes</option>
+                            <option value="30">30 minutes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Contacts d'alerte</label>
+                        <div class="checkbox-group" id="alertContacts">
+                            <label><input type="checkbox" value="email"> Email principal</label>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                    <button type="submit" form="monitorForm" class="btn btn-primary">Créer le monitor</button>
                 </div>
-            </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-                <button type="submit" form="monitorForm" class="btn btn-primary">Créer le monitor</button>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <!-- Note: app.js must include event listeners for navigation links to prevent default behavior and handle page switching -->
     <script src="app.js"></script>
 </body>
 </html>

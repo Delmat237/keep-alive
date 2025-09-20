@@ -779,35 +779,6 @@ td {
 }
 
 /* ================================
-   INDICATEURS DE STATUT (USED IN app.js)
-   ================================ */
-
-.status-indicator {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 8px;
-    vertical-align: middle;
-}
-
-.status-indicator.active {
-    background-color: var(--success);
-}
-
-.status-indicator.error {
-    background-color: var(--danger);
-}
-
-.status-indicator.warning {
-    background-color: var(--warning);
-}
-
-.status-indicator.paused {
-    background-color: var(--gray-400);
-}
-
-/* ================================
    FILTRES
    ================================ */
 
@@ -839,7 +810,7 @@ td {
     gap: 24px;
 }
 
-.monitor-item {
+.monitor-card {
     background: white;
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow);
@@ -848,34 +819,61 @@ td {
     transition: var(--transition);
 }
 
-.monitor-item:hover {
+.monitor-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 
-.monitor-info {
+.monitor-card-header {
     padding: 20px;
     border-bottom: 1px solid var(--gray-200);
 }
 
-.monitor-info h3 {
+.monitor-name {
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--gray-900);
     margin-bottom: 4px;
 }
 
-.monitor-info p {
+.monitor-url {
     color: var(--gray-500);
     font-size: 0.9rem;
     word-break: break-all;
 }
 
-.monitor-status {
+.monitor-card-body {
     padding: 20px;
+}
+
+.monitor-stats {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    margin-bottom: 16px;
+}
+
+.monitor-stat {
+    text-align: center;
+}
+
+.monitor-stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.monitor-stat-label {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.monitor-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
 }
 
 /* ================================
