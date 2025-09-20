@@ -1,62 +1,58 @@
-🚀 Keep-Alive Service - Ping Monitoring Platform
+# 🚀 Keep-Alive Service - Ping Monitoring Platform
 
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![Node.js](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 
-Solution professionnelle de monitoring et keep-alive pour maintenir vos services web actifs 24/7
+> **Solution professionnelle de monitoring et keep-alive pour maintenir vos services web actifs 24/7**
 
 Plateforme web complète qui automatise le ping périodique de vos services hébergés sur Render.com, Railway, Heroku, et autres plateformes pour éviter leur mise en veille automatique. Interface moderne avec dashboard temps réel, APIs sécurisées avec authentification multi-utilisateurs, et déploiement serverless sur Vercel.
-📋 Table des Matières
 
-🎯 Problématique Résolue
-⚡ Fonctionnalités Principales
-🏗️ Architecture Technique
-🛠️ Technologies Utilisées
-🚀 Installation Rapide
-📋 Guide d'Utilisation
-🔧 Configuration Avancée
-📊 Interface Utilisateur
-🌐 API Documentation
-⚙️ Déploiement Production
-📈 Monitoring et Analytics
-🧪 Tests et Qualité
-🤝 Contribution
-📄 Licence
+## 📋 Table des Matières
 
-🎯 Problématique Résolue
-Le Défi des Plateformes Cloud
+- [🎯 Problématique Résolue](#-problématique-résolue)
+- [⚡ Fonctionnalités Principales](#-fonctionnalités-principales)
+- [🏗️ Architecture Technique](#️-architecture-technique)
+- [🛠️ Technologies Utilisées](#️-technologies-utilisées)
+- [🚀 Installation Rapide](#-installation-rapide)
+- [📋 Guide d'Utilisation](#-guide-dutilisation)
+- [🔧 Configuration Avancée](#-configuration-avancée)
+- [📊 Interface Utilisateur](#-interface-utilisateur)
+- [🌐 API Documentation](#-api-documentation)
+- [⚙️ Déploiement Production](#️-déploiement-production)
+- [📈 Monitoring et Analytics](#-monitoring-et-analytics)
+- [🧪 Tests et Qualité](#-tests-et-qualité)
+- [🤝 Contribution](#-contribution)
+- [📄 Licence](#-licence)
+
+## 🎯 Problématique Résolue
+
+### **Le Défi des Plateformes Cloud**
+
 De nombreuses plateformes d'hébergement gratuit mettent automatiquement en veille les applications inactives :
 
+| Plateforme | Temps d'inactivité | Impact |
+|------------|-------------------|---------|
+| **Render.com** | 15 minutes | ❌ Service indisponible |
+| **Railway** | 5 minutes | ❌ Cold start lent |
+| **Heroku** | 30 minutes | ❌ Latence accrue |
+| **Fly.io** | Variable | ❌ Arrêt automatique |
 
+### **Notre Solution**
 
-Plateforme
-Temps d'inactivité
-Impact
+✅ **Pings automatisés** pour maintenir l'activité  
+✅ **Monitoring temps réel** avec dashboard intuitif  
+✅ **Authentification sécurisée** pour multi-utilisateurs  
+✅ **Alertes intelligentes** en cas de panne  
+✅ **Déploiement simple** en une commande  
 
+## ⚡ Fonctionnalités Principales
 
+### **🔄 Monitoring Automatisé**
 
-Render.com
-15 minutes
-❌ Service indisponible
-
-
-Railway
-5 minutes
-❌ Cold start lent
-
-
-Heroku
-30 minutes
-❌ Latence accrue
-
-
-Fly.io
-Variable
-❌ Arrêt automatique
-
-
-Notre Solution
-✅ Pings automatisés pour maintenir l'activité✅ Monitoring temps réel avec dashboard intuitif✅ Authentification sécurisée pour multi-utilisateurs✅ Alertes intelligentes en cas de panne✅ Déploiement simple en une commande  
-⚡ Fonctionnalités Principales
-🔄 Monitoring Automatisé
+```javascript
 // Configuration flexible des moniteurs
 const monitors = [
   {
@@ -68,45 +64,48 @@ const monitors = [
     status: "active"
   }
 ];
+```
 
+- **Pings périodiques** - Intervalles configurables (1-60 minutes)
+- **Support multi-types** - HTTP, Ping, Port
+- **Détection intelligente** - Identification automatique des pannes
+- **Retry logique** - Jusqu'à 3 tentatives avec backoff
+- **Health checks** - Vérification de l'état des services
 
-Pings périodiques - Intervalles configurables (1-60 minutes)
-Support multi-types - HTTP, Ping, Port
-Détection intelligente - Identification automatique des pannes
-Retry logique - Jusqu'à 3 tentatives avec backoff
-Health checks - Vérification de l'état des services
+### **🔒 Authentification Sécurisée**
 
-🔒 Authentification Sécurisée
+- **Connexion/Inscription** - Gestion complète des utilisateurs
+- **JWT Tokens** - Authentification sécurisée avec tokens
+- **Vérification de session** - Validation automatique des sessions
+- **Déconnexion sécurisée** - Suppression des tokens
 
-Connexion/Inscription - Gestion complète des utilisateurs
-JWT Tokens - Authentification sécurisée avec tokens
-Vérification de session - Validation automatique des sessions
-Déconnexion sécurisée - Suppression des tokens
+### **📊 Dashboard Temps Réel**
 
-📊 Dashboard Temps Réel
+- **Statistiques live** - Moniteurs actifs, taux de succès, temps de réponse moyen
+- **Logs d'activité** - Historique des changements de statut
+- **Indicateurs visuels** - Statuts colorés (actif, warning, erreur)
+- **Interface responsive** - Compatible mobile et desktop
 
-Statistiques live - Moniteurs actifs, taux de succès, temps de réponse moyen
-Logs d'activité - Historique des changements de statut
-Indicateurs visuels - Statuts colorés (actif, warning, erreur)
-Interface responsive - Compatible mobile et desktop
+### **🔔 Système d'Alertes**
 
-🔔 Système d'Alertes
+- **Détection de pannes** - Alertes après 3 échecs consécutifs
+- **Récupération de service** - Notifications de retour en ligne
+- **Historique des incidents** - Suivi des temps d'arrêt
+- **Personnalisation** - Seuils d'alerte configurables
 
-Détection de pannes - Alertes après 3 échecs consécutifs
-Récupération de service - Notifications de retour en ligne
-Historique des incidents - Suivi des temps d'arrêt
-Personnalisation - Seuils d'alerte configurables
+### **🛡️ Sécurité et Fiabilité**
 
-🛡️ Sécurité et Fiabilité
+- **Authentification JWT** - Accès restreint aux données utilisateur
+- **Rate limiting** - Protection contre les abus
+- **Timeout intelligent** - Gestion des requêtes lentes
+- **Persistance des données** - Sauvegarde avec Vercel KV
+- **Haute disponibilité** - Infrastructure serverless auto-scalable
 
-Authentification JWT - Accès restreint aux données utilisateur
-Rate limiting - Protection contre les abus
-Timeout intelligent - Gestion des requêtes lentes
-Persistance des données - Sauvegarde avec Vercel KV
-Haute disponibilité - Infrastructure serverless auto-scalable
+## 🏗️ Architecture Technique
 
-🏗️ Architecture Technique
-Vue d'Ensemble du Système
+### **Vue d'Ensemble du Système**
+
+```mermaid
 graph TB
     A[Client Web] --> B[Interface HTML/JS]
     B --> C[API Vercel Functions]
@@ -143,8 +142,11 @@ graph TB
         S[Railway Apps]
         T[Heroku Apps]
     end
+```
 
-Architecture des Données
+### **Architecture des Données**
+
+```typescript
 // Structure des données utilisateur
 interface User {
   id: number;
@@ -194,8 +196,11 @@ interface Activity {
   message: string;
   timestamp: string;
 }
+```
 
-Flow de Ping Automatisé
+### **Flow de Ping Automatisé**
+
+```mermaid
 sequenceDiagram
     participant U as Utilisateur
     participant C as Cron Service
@@ -221,31 +226,31 @@ sequenceDiagram
     end
     A->>D: Mettre à jour stats utilisateur
     A->>U: Retourner résultats
+```
 
-🛠️ Technologies Utilisées
-Stack Frontend
+## 🛠️ Technologies Utilisées
 
-HTML5 - Interface utilisateur moderne
-CSS3 - Design responsive avec animations
-JavaScript ES6+ - Logique client interactive
-Fetch API - Requêtes asynchrones sécurisées
+### **Stack Frontend**
+- **HTML5** - Interface utilisateur moderne
+- **CSS3** - Design responsive avec animations
+- **JavaScript ES6+** - Logique client interactive
+- **Fetch API** - Requêtes asynchrones sécurisées
 
-Stack Backend
+### **Stack Backend**
+- **Vercel Functions** - Serverless computing
+- **Node.js** - Runtime JavaScript
+- **Vercel KV (Redis)** - Stockage des données utilisateurs et moniteurs
+- **JWT** - Authentification sécurisée
+- **RESTful API** - Architecture API standard
 
-Vercel Functions - Serverless computing
-Node.js - Runtime JavaScript
-Vercel KV (Redis) - Stockage des données utilisateurs et moniteurs
-JWT - Authentification sécurisée
-RESTful API - Architecture API standard
+### **DevOps et Monitoring**
+- **Vercel Platform** - Hébergement et déploiement
+- **GitHub Actions** - CI/CD automatisé
+- **Cron-job.org** - Planification externe
+- **Uptime Robot** - Monitoring de backup
 
-DevOps et Monitoring
-
-Vercel Platform - Hébergement et déploiement
-GitHub Actions - CI/CD automatisé
-Cron-job.org - Planification externe
-Uptime Robot - Monitoring de backup
-
-Outils de Développement
+### **Outils de Développement**
+```json
 {
   "dependencies": {
     "@vercel/kv": "^0.2.1",
@@ -261,18 +266,23 @@ Outils de Développement
     "eslint": "^8.0.0"
   }
 }
+```
 
-🚀 Installation Rapide
-Méthode 1 : Déploiement Direct (Recommandée)
+## 🚀 Installation Rapide
 
+### **Méthode 1 : Déploiement Direct (Recommandée)**
 
-Cliquer sur le bouton "Deploy with Vercel"
-Configurer Vercel KV database
-Ajouter les variables d'environnement (JWT_SECRET, REDIS_URL)
-Déployer automatiquement
-Configurer le cron externe
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Delmat237/keep-alive)
 
-Méthode 2 : Installation Locale
+1. **Cliquer** sur le bouton "Deploy with Vercel"
+2. **Configurer** Vercel KV database
+3. **Ajouter** les variables d'environnement (`JWT_SECRET`, `REDIS_URL`)
+4. **Déployer** automatiquement
+5. **Configurer** le cron externe
+
+### **Méthode 2 : Installation Locale**
+
+```bash
 # 1. Cloner le repository
 git clone https://github.com/Delmat237/keep-alive.git
 cd keep-alive
@@ -289,8 +299,11 @@ npm run dev
 
 # 5. Déploiement production
 npm run deploy
+```
 
-Structure du Projet
+### **Structure du Projet**
+
+```
 keep-alive/
 ├── 📁 public/                 # Interface utilisateur
 │   ├── index.html            # Page principale
@@ -311,17 +324,22 @@ keep-alive/
 ├── package.json              # Configuration npm
 ├── vercel.json               # Configuration Vercel
 └── README.md                 # Documentation
+```
 
-📋 Guide d'Utilisation
-Première Configuration
-1. Créer un Compte
+## 📋 Guide d'Utilisation
+
+### **Première Configuration**
+
+#### **1. Créer un Compte**
+```
 https://keep-alive.vercel.app/register
+```
+- Remplir le formulaire d'inscription (nom, email, mot de passe)
+- Se connecter avec les identifiants
 
+#### **2. Ajouter un Moniteur**
 
-Remplir le formulaire d'inscription (nom, email, mot de passe)
-Se connecter avec les identifiants
-
-2. Ajouter un Moniteur
+```javascript
 // Exemple de configuration
 {
   name: "Mon API Backend",
@@ -329,15 +347,20 @@ Se connecter avec les identifiants
   type: "http",
   interval: 10 // Ping toutes les 10 minutes
 }
+```
 
-3. Configurer l'Automatisation
-Option A : Cron-job.org (Gratuit)
+#### **3. Configurer l'Automatisation**
+
+**Option A : Cron-job.org (Gratuit)**
+```
 URL: https://your-app.vercel.app/api/ping
 Method: POST
 Authorization: Bearer <votre-jwt-token>
 Schedule: */10 * * * * (toutes les 10 minutes)
+```
 
-Option B : GitHub Actions
+**Option B : GitHub Actions**
+```yaml
 name: Keep Services Alive
 on:
   schedule:
@@ -351,24 +374,30 @@ jobs:
           -H "Authorization: Bearer $JWT_TOKEN"
         env:
           JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+```
 
-Utilisation Quotidienne
-Dashboard Principal
+### **Utilisation Quotidienne**
 
-📊 Statistiques - Nombre de moniteurs, taux de succès, temps de réponse
-🔄 Ping Manuel - Tester tous les moniteurs immédiatement
-📝 Logs d'activité - Suivi des changements de statut
-⚙️ Gestion - Ajouter, modifier, supprimer des moniteurs
+#### **Dashboard Principal**
+- 📊 **Statistiques** - Nombre de moniteurs, taux de succès, temps de réponse
+- 🔄 **Ping Manuel** - Tester tous les moniteurs immédiatement
+- 📝 **Logs d'activité** - Suivi des changements de statut
+- ⚙️ **Gestion** - Ajouter, modifier, supprimer des moniteurs
 
-Monitoring des Moniteurs
+#### **Monitoring des Moniteurs**
+```javascript
 // États des moniteurs
 ✅ Active    - Service répond correctement
 ⚠️ Warning   - 1-3 erreurs récentes
 ❌ Error     - Plus de 3 erreurs consécutives
 ⏸️ Paused    - Monitoring suspendu
+```
 
-🔧 Configuration Avancée
-Variables d'Environnement
+## 🔧 Configuration Avancée
+
+### **Variables d'Environnement**
+
+```bash
 # .env.local
 NEXT_PUBLIC_APP_NAME="Keep-Alive Service"
 REDIS_URL="redis://localhost:6379"
@@ -377,14 +406,20 @@ PING_TIMEOUT=25000
 MAX_RETRIES=2
 RATE_LIMIT=100
 LOG_LEVEL=info
+```
 
-Configuration Vercel KV
+### **Configuration Vercel KV**
+
+```bash
 # Créer la base de données
 npx vercel kv create keep-alive-production
 vercel env add REDIS_URL
 vercel env add JWT_SECRET
+```
 
-Personnalisation du Ping Engine
+### **Personnalisation du Ping Engine**
+
+```javascript
 // api/ping.js - Configuration avancée
 const PING_CONFIG = {
   timeout: 25000,
@@ -397,18 +432,25 @@ const PING_CONFIG = {
     'Connection': 'close'
   }
 };
+```
 
-Rate Limiting et Sécurité
+### **Rate Limiting et Sécurité**
+
+```javascript
 // Protection contre les abus
 const rateLimiter = {
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limite de 100 requêtes
   message: 'Trop de requêtes, réessayez plus tard'
 };
+```
 
-📊 Interface Utilisateur
-Design System
-Palette de Couleurs
+## 📊 Interface Utilisateur
+
+### **Design System**
+
+#### **Palette de Couleurs**
+```css
 :root {
   --primary: #667eea;
   --secondary: #764ba2;
@@ -418,9 +460,12 @@ Palette de Couleurs
   --light: #f8f9fa;
   --dark: #343a40;
 }
+```
 
-Composants Principaux
-1. Header avec Statistiques
+#### **Composants Principaux**
+
+**1. Header avec Statistiques**
+```html
 <!-- Dashboard cards responsive -->
 <div class="stats-grid">
   <div class="stat-card">
@@ -428,8 +473,10 @@ Composants Principaux
     <div class="stat-label">Services Actifs</div>
   </div>
 </div>
+```
 
-2. Formulaire d'Ajout
+**2. Formulaire d'Ajout**
+```html
 <!-- Form avec validation -->
 <form id="monitorForm" class="service-form">
   <input id="monitorName" type="text" placeholder="Nom du moniteur" required>
@@ -441,8 +488,10 @@ Composants Principaux
   </select>
   <input id="monitorInterval" type="number" min="1" max="60" placeholder="10" required>
 </form>
+```
 
-3. Liste des Moniteurs
+**3. Liste des Moniteurs**
+```html
 <!-- Monitor cards avec statut visuel -->
 <div class="monitor-item">
   <div class="monitor-info">
@@ -454,8 +503,11 @@ Composants Principaux
     <button class="btn-danger" onclick="app.deleteMonitor({id})">Supprimer</button>
   </div>
 </div>
+```
 
-Responsive Design
+### **Responsive Design**
+
+```css
 /* Mobile First Approach */
 @media (max-width: 768px) {
   .stats-grid { grid-template-columns: 1fr; }
@@ -467,11 +519,16 @@ Responsive Design
   .stats-grid { grid-template-columns: repeat(3, 1fr); }
   .monitor-item { flex-direction: row; }
 }
+```
 
-🌐 API Documentation
-Endpoints Disponibles
-POST /api/auth/login
+## 🌐 API Documentation
+
+### **Endpoints Disponibles**
+
+#### **POST /api/auth/login**
 Authentifie un utilisateur et retourne un JWT.
+
+```json
 // Request
 {
   "email": "user@example.com",
@@ -488,9 +545,12 @@ Authentifie un utilisateur et retourne un JWT.
     "email": "user@example.com"
   }
 }
+```
 
-POST /api/auth/register
+#### **POST /api/auth/register**
 Crée un nouveau compte utilisateur.
+
+```json
 // Request
 {
   "name": "John Doe",
@@ -503,9 +563,12 @@ Crée un nouveau compte utilisateur.
   "success": true,
   "message": "User registered successfully"
 }
+```
 
-GET /api/auth/verify
+#### **GET /api/auth/verify**
 Vérifie la validité d'un JWT.
+
+```json
 // Request Headers
 {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -520,9 +583,12 @@ Vérifie la validité d'un JWT.
     "email": "user@example.com"
   }
 }
+```
 
-GET /api/monitors
+#### **GET /api/monitors**
 Récupère les moniteurs de l'utilisateur authentifié.
+
+```json
 // Request Headers
 {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -548,9 +614,12 @@ Récupère les moniteurs de l'utilisateur authentifié.
     }
   ]
 }
+```
 
-POST /api/monitors
+#### **POST /api/monitors**
 Ajoute un nouveau moniteur.
+
+```json
 // Request Headers
 {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -578,9 +647,12 @@ Ajoute un nouveau moniteur.
     "created_at": "2025-09-20T06:15:00Z"
   }
 }
+```
 
-PUT /api/monitors
+#### **PUT /api/monitors**
 Met à jour un moniteur existant.
+
+```json
 // Request Headers
 {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -611,9 +683,12 @@ Met à jour un moniteur existant.
     "updated_at": "2025-09-20T06:15:00Z"
   }
 }
+```
 
-DELETE /api/monitors?id={id}
+#### **DELETE /api/monitors?id={id}**
 Supprime un moniteur.
+
+```json
 // Request Headers
 {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -624,9 +699,12 @@ Supprime un moniteur.
   "success": true,
   "message": "Monitor deleted successfully"
 }
+```
 
-GET /api/stats
+#### **GET /api/stats**
 Récupère les statistiques utilisateur.
+
+```json
 // Request Headers
 {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -647,9 +725,12 @@ Récupère les statistiques utilisateur.
     "lastPingTime": "2025-09-20T06:10:00Z"
   }
 }
+```
 
-GET /api/activity
+#### **GET /api/activity**
 Récupère l'historique d'activité utilisateur.
+
+```json
 // Request Headers
 {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -668,9 +749,12 @@ Récupère l'historique d'activité utilisateur.
     }
   ]
 }
+```
 
-POST /api/ping
+#### **POST /api/ping**
 Lance un ping manuel de tous les moniteurs de l'utilisateur.
+
+```json
 // Request Headers
 {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -703,50 +787,32 @@ Lance un ping manuel de tous les moniteurs de l'utilisateur.
     "successRate": 100
   }
 }
+```
 
-Codes d'Erreur
+### **Codes d'Erreur**
 
+| Code | Description | Solution |
+|------|------------|----------|
+| 400 | Requête invalide | Vérifier les paramètres |
+| 401 | Non authentifié | Fournir un JWT valide |
+| 404 | Ressource non trouvée | Vérifier l'ID du moniteur |
+| 429 | Rate limit dépassé | Attendre avant de réessayer |
+| 500 | Erreur serveur | Contacter le support |
 
+## ⚙️ Déploiement Production
 
-Code
-Description
-Solution
+### **Étape 1 : Préparation**
 
-
-
-400
-Requête invalide
-Vérifier les paramètres
-
-
-401
-Non authentifié
-Fournir un JWT valide
-
-
-404
-Ressource non trouvée
-Vérifier l'ID du moniteur
-
-
-429
-Rate limit dépassé
-Attendre avant de réessayer
-
-
-500
-Erreur serveur
-Contacter le support
-
-
-⚙️ Déploiement Production
-Étape 1 : Préparation
+```bash
 # Vérifications pré-déploiement
 npm run lint
 npm run test
 npm run build
+```
 
-Étape 2 : Configuration Vercel
+### **Étape 2 : Configuration Vercel**
+
+```json
 // vercel.json
 {
   "version": 2,
@@ -767,34 +833,42 @@ npm run build
     "JWT_SECRET": "@jwt_secret"
   }
 }
+```
 
-Étape 3 : Base de Données
+### **Étape 3 : Base de Données**
+
+```bash
 # Créer et configurer Vercel KV
 vercel kv create keep-alive-production
 vercel env add REDIS_URL
 vercel env add JWT_SECRET
+```
 
-Étape 4 : Déploiement
+### **Étape 4 : Déploiement**
+
+```bash
 # Déploiement production
 vercel --prod
 
 # Vérification du déploiement
 curl -f https://your-domain.vercel.app/api/monitors -H "Authorization: Bearer <jwt-token>"
+```
 
-Étape 5 : Configuration Cron
-Cron-job.org Setup :
+### **Étape 5 : Configuration Cron**
 
-Créer un compte sur cron-job.org
-Ajouter un nouveau cron job :
-URL: https://your-domain.vercel.app/api/ping
-Method: POST
-Headers: Authorization: Bearer <jwt-token>
-Schedule: */10 * * * *
+**Cron-job.org Setup :**
+1. Créer un compte sur [cron-job.org](https://cron-job.org)
+2. Ajouter un nouveau cron job :
+   - URL: `https://your-domain.vercel.app/api/ping`
+   - Method: POST
+   - Headers: `Authorization: Bearer <jwt-token>`
+   - Schedule: `*/10 * * * *`
 
+## 📈 Monitoring et Analytics
 
+### **Métriques Clés**
 
-📈 Monitoring et Analytics
-Métriques Clés
+```typescript
 interface Metrics {
   // Performance
   averageResponseTime: number;
@@ -811,15 +885,18 @@ interface Metrics {
   errorRate: number;
   incidentCount: number;
 }
+```
 
-Dashboard Vercel
+### **Dashboard Vercel**
 
-Function Logs - Logs des APIs en temps réel
-Performance - Temps de réponse et utilisation
-Errors - Suivi des erreurs et stack traces
-Analytics - Statistiques d'usage et trafic
+- **Function Logs** - Logs des APIs en temps réel
+- **Performance** - Temps de réponse et utilisation
+- **Errors** - Suivi des erreurs et stack traces
+- **Analytics** - Statistiques d'usage et trafic
 
-Alertes Personnalisées
+### **Alertes Personnalisées**
+
+```javascript
 // Configuration des alertes
 const alertRules = {
   monitorDown: {
@@ -833,8 +910,11 @@ const alertRules = {
     threshold: 3
   }
 };
+```
 
-Rapports Automatiques
+### **Rapports Automatiques**
+
+```javascript
 // Génération de rapports hebdomadaires
 const generateWeeklyReport = async () => {
   const stats = await getWeeklyStats();
@@ -845,9 +925,13 @@ const generateWeeklyReport = async () => {
     topMonitors: stats.mostActiveMonitors
   };
 };
+```
 
-🧪 Tests et Qualité
-Suite de Tests
+## 🧪 Tests et Qualité
+
+### **Suite de Tests**
+
+```bash
 # Tests unitaires
 npm run test:unit
 
@@ -859,8 +943,11 @@ npm run test:e2e
 
 # Couverture de code
 npm run test:coverage
+```
 
-Tests API
+### **Tests API**
+
+```javascript
 // tests/api.test.js
 describe('Monitors API', () => {
   test('should create new monitor', async () => {
@@ -883,8 +970,11 @@ describe('Monitors API', () => {
     expect(data.success).toBe(true);
   });
 });
+```
 
-Tests de Charge
+### **Tests de Charge**
+
+```javascript
 // tests/load.test.js
 const loadTest = async () => {
   const concurrentPings = 50;
@@ -900,8 +990,11 @@ const loadTest = async () => {
   
   console.log(`${successCount}/${concurrentPings} pings réussis`);
 };
+```
 
-Qualité du Code
+### **Qualité du Code**
+
+```json
 // .eslintrc.json
 {
   "extends": ["eslint:recommended", "prettier"],
@@ -911,23 +1004,30 @@ Qualité du Code
     "prefer-const": "error"
   }
 }
+```
 
-🤝 Contribution
-Comment Contribuer
+## 🤝 Contribution
 
-🍴 Fork le repository
-🌟 Créer une branche featuregit checkout -b feature/nouvelle-fonctionnalite
+### **Comment Contribuer**
 
+1. **🍴 Fork** le repository
+2. **🌟 Créer** une branche feature
+   ```bash
+   git checkout -b feature/nouvelle-fonctionnalite
+   ```
+3. **✅ Développer** avec tests
+4. **📝 Commiter** avec messages clairs
+   ```bash
+   git commit -m "feat: ajouter support authentification JWT"
+   ```
+5. **🚀 Push** et créer une PR
+   ```bash
+   git push origin feature/nouvelle-fonctionnalite
+   ```
 
-✅ Développer avec tests
-📝 Commiter avec messages clairsgit commit -m "feat: ajouter support authentification JWT"
+### **Standards de Code**
 
-
-🚀 Push et créer une PRgit push origin feature/nouvelle-fonctionnalite
-
-
-
-Standards de Code
+```javascript
 // Utilisez JSDoc pour la documentation
 /**
  * Ping un moniteur et retourne le résultat
@@ -941,40 +1041,42 @@ Standards de Code
 async function pingServiceWithRetry(monitor, userId, activities) {
   // Implementation...
 }
+```
 
-Types de Contributions
+### **Types de Contributions**
 
-🐛 Bug fixes - Corrections de bugs
-✨ Features - Nouvelles fonctionnalités
-📚 Documentation - Améliorations doc
-🎨 UI/UX - Améliorations interface
-⚡ Performance - Optimisations
-🧪 Tests - Amélioration couverture
+- 🐛 **Bug fixes** - Corrections de bugs
+- ✨ **Features** - Nouvelles fonctionnalités
+- 📚 **Documentation** - Améliorations doc
+- 🎨 **UI/UX** - Améliorations interface
+- ⚡ **Performance** - Optimisations
+- 🧪 **Tests** - Amélioration couverture
 
-Roadmap 2025
-Q3 2025
+### **Roadmap 2025**
 
- Authentification multi-utilisateurs avec JWT
- Webhooks pour notifications externes
- Graphiques de performance historique
- Export des données CSV/JSON
+#### **Q3 2025**
+- [x] Authentification multi-utilisateurs avec JWT
+- [ ] Webhooks pour notifications externes
+- [ ] Graphiques de performance historique
+- [ ] Export des données CSV/JSON
 
-Q4 2025
+#### **Q4 2025**
+- [ ] Mobile app (React Native)
+- [ ] Intégration Slack/Discord
+- [ ] Templates de moniteurs pré-configurés
+- [ ] API rate limiting avancé
 
- Mobile app (React Native)
- Intégration Slack/Discord
- Templates de moniteurs pré-configurés
- API rate limiting avancé
+#### **Q1 2026**
+- [ ] Machine learning pour prédiction pannes
+- [ ] Monitoring géographique multi-région
+- [ ] Clustering de moniteurs
+- [ ] Tableau de bord administrateur
 
-Q1 2026
+## 📄 Licence
 
- Machine learning pour prédiction pannes
- Monitoring géographique multi-région
- Clustering de moniteurs
- Tableau de bord administrateur
+Ce projet est sous licence **MIT** - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
-📄 Licence
-Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails.
+```
 MIT License
 
 Copyright (c) 2025 Keep-Alive Service Contributors
@@ -984,83 +1086,59 @@ of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software...
+```
 
-👨‍💻 Auteur et Équipe
-Développeur Principal
-Delmat L
+## 👨‍💻 Auteur et Équipe
 
-🌐 GitHub: Delmat237
-💼 LinkedIn: votre-profil
-📧 Email: azangueleonel9@gmail.com
-🐦 Twitter: votre-handle
+### **Développeur Principal**
 
-Stack d'Expertise
+**Delmat L**
+- 🌐 **GitHub**: [Delmat237](https://github.com/Delmat237)
+- 💼 **LinkedIn**: [votre-profil](https://linkedin.com/in/votre-profil)
+- 📧 **Email**: azangueleonel9@gmail.com
+- 🐦 **Twitter**: [votre-handle](https://twitter.com/votre-handle)
 
-Frontend: HTML5, CSS3, JavaScript ES6+, React
-Backend: Node.js, Serverless, REST APIs
-Cloud: Vercel, AWS, Google Cloud
-Databases: Redis, MongoDB, PostgreSQL
-DevOps: CI/CD, Docker, Monitoring
+### **Stack d'Expertise**
+- **Frontend**: HTML5, CSS3, JavaScript ES6+, React
+- **Backend**: Node.js, Serverless, REST APIs
+- **Cloud**: Vercel, AWS, Google Cloud
+- **Databases**: Redis, MongoDB, PostgreSQL
+- **DevOps**: CI/CD, Docker, Monitoring
 
-🏆 Remerciements
+## 🏆 Remerciements
 
-Vercel Team - Pour la plateforme serverless exceptionnelle
-Communauté Open Source - Pour les outils et librairies
-Beta Testers - Pour les retours et suggestions
-Contributors - Pour les améliorations continues
+- **Vercel Team** - Pour la plateforme serverless exceptionnelle
+- **Communauté Open Source** - Pour les outils et librairies
+- **Beta Testers** - Pour les retours et suggestions
+- **Contributors** - Pour les améliorations continues
 
-📊 Métriques du Projet
+## 📊 Métriques du Projet
 
+![GitHub Stars](https://img.shields.io/github/stars/Delmat237/keep-alive-service?style=social)
+![GitHub Forks](https://img.shields.io/github/forks/Delmat237/keep-alive-service?style=social)
+![GitHub Issues](https://img.shields.io/github/issues/Delmat237/keep-alive-service)
+![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Delmat237/keep-alive-service)
 
-🌟 Showcase
-Services Supportés
+![Lines of Code](https://img.shields.io/tokei/lines/github/Delmat237/keep-alive-service)
+![Code Size](https://img.shields.io/github/languages/code-size/Delmat237/keep-alive-service)
+![Last Commit](https://img.shields.io/github/last-commit/Delmat237/keep-alive-service)
 
+## 🌟 Showcase
 
+### **Services Supportés**
 
-Plateforme
-Status
-Intégration
-Notes
+| Plateforme | Status | Intégration | Notes |
+|------------|--------|-------------|-------|
+| **Render.com** | ✅ Testé | Native | Sleep après 15min |
+| **Railway** | ✅ Testé | Native | Sleep après 5min |
+| **Heroku** | ✅ Testé | Native | Sleep après 30min |
+| **Fly.io** | ✅ Compatible | API | Auto-stop configurable |
+| **Google Cloud Run** | ✅ Compatible | HTTP | Pay-per-use |
+| **AWS Lambda** | ⚠️ Partiel | API Gateway | Cold starts |
 
+### **Cas d'Usage Réels**
 
-
-Render.com
-✅ Testé
-Native
-Sleep après 15min
-
-
-Railway
-✅ Testé
-Native
-Sleep après 5min
-
-
-Heroku
-✅ Testé
-Native
-Sleep après 30min
-
-
-Fly.io
-✅ Compatible
-API
-Auto-stop configurable
-
-
-Google Cloud Run
-✅ Compatible
-HTTP
-Pay-per-use
-
-
-AWS Lambda
-⚠️ Partiel
-API Gateway
-Cold starts
-
-
-Cas d'Usage Réels
+```javascript
 // Exemple : E-commerce API
 {
   name: "Boutique API",
@@ -1087,24 +1165,31 @@ Cas d'Usage Réels
   interval: 10, // Important
   priority: "medium"
 }
+```
 
-📞 Support et Contact
-Options de Support
+## 📞 Support et Contact
 
-📖 Documentation: docs.keep-alive-service.com
-🐛 Bug Reports: GitHub Issues
-💬 Discussions: GitHub Discussions
-📧 Contact Direct: azangueleonel9@gmail.com
+### **Options de Support**
 
-Temps de Réponse
+- 📖 **Documentation**: [docs.keep-alive-service.com](https://docs.keep-alive-service.com)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/Delmat237/keep-alive-service/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/Delmat237/keep-alive-service/discussions)
+- 📧 **Contact Direct**: azangueleonel9@gmail.com
 
-🔴 Bugs critiques: < 24h
-🟡 Demandes features: < 72h  
-🟢 Questions générales: < 1 semaine
+### **Temps de Réponse**
 
+- 🔴 **Bugs critiques**: < 24h
+- 🟡 **Demandes features**: < 72h  
+- 🟢 **Questions générales**: < 1 semaine
 
-⭐ Si ce projet vous aide à maintenir vos services actifs, n'hésitez pas à le ⭐ starrer !
-🔗 Partagez ce projet avec d'autres développeurs qui pourraient en bénéficier !
-📈 Suivez-nous pour les mises à jour et nouvelles fonctionnalités !
+---
 
-Dernière mise à jour : Septembre 2025
+⭐ **Si ce projet vous aide à maintenir vos services actifs, n'hésitez pas à le ⭐ starrer !**
+
+🔗 **Partagez ce projet avec d'autres développeurs qui pourraient en bénéficier !**
+
+📈 **Suivez-nous pour les mises à jour et nouvelles fonctionnalités !**
+
+---
+
+*Dernière mise à jour : Septembre 2025*
