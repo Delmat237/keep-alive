@@ -3,64 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keep-Alive Service</title>
+    <title>Keep Alive Services</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 Keep-Alive Service</h1>
-        <p class="subtitle">Maintenez vos services actifs avec des pings périodiques - Hébergé sur Vercel</p>
-
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number" id="totalServices">0</div>
-                <div class="stat-label">Services actifs</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalPings">0</div>
-                <div class="stat-label">Pings envoyés</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="successRate">100%</div>
-                <div class="stat-label">Taux de succès</div>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h2>➕ Ajouter un nouveau service</h2>
-            <form id="serviceForm">
-                <div class="form-group">
-                    <label for="serviceName">Nom du service</label>
-                    <input type="text" id="serviceName" placeholder="Ex: Mon API Backend" required>
+    <!-- Page de Login -->
+    <div id="loginPage" class="auth-page active">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1><i class="fas fa-heartbeat"></i> Keep-Alive Service </h1>
+                    <p>Professional Website Monitoring Platform</p>
                 </div>
-                <div class="form-group">
-                    <label for="serviceUrl">URL du service</label>
-                    <input type="url" id="serviceUrl" placeholder="https://votre-service.com" required>
+                
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="votre@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Mot de passe</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Se connecter</button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Pas de compte ? <a href="#" id="showRegister">Créer un compte</a></p>
+                    <p><a href="#" id="showForgot">Mot de passe oublié ?</a></p>
                 </div>
-                <div class="form-group">
-                    <label for="interval">Intervalle (minutes)</label>
-                    <input type="number" id="interval" min="1" max="60" value="10" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Ajouter le service</button>
-            </form>
-        </div>
-
-        <div class="services-list">
-            <div class="manual-ping-section">
-                <h2>📋 Services surveillés</h2>
-                <button id="manualPingBtn" class="btn btn-success">🔄 Ping manuel de tous les services</button>
             </div>
-            <div id="servicesList">
-                <div class="loading">🔄 Chargement des services...</div>
-            </div>
-        </div>
-
-        <div class="log-section">
-            <h3>📊 Logs en temps réel</h3>
-            <div id="logs"></div>
         </div>
     </div>
 
+    <!-- Page d'Inscription -->
+    <div id="registerPage" class="auth-page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1><i class="fas fa-heartbeat"></i> Créer un compte</h1>
+                    <p>Commencez à monitorer vos services</p>
+                </div>
+                
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerName">Nom complet</label>
+                        <input type="text" id="registerName" placeholder="Delmat L" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" placeholder="votre@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Mot de passe</label>
+                        <input type="password" id="registerPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirm">Confirmer le mot de passe</label>
+                        <input type="password" id="registerConfirm" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Créer le compte</button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Déjà un compte ? <a href="#" id="showLogin">Se connecter</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Principale -->
+    <div id="mainApp" class="main-app">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-heartbeat"></i> UpKeep</h2>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Delmat L</span>
+                    <span class="user-email" id="userEmail">azangueleonel9@gmail.com</span>
+                </div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" data-page="monitors"><i class="fas fa-desktop"></i> Monitors</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" data-page="status-pages"><i class="fas fa-globe"></i> Status Pages</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" data-page="incidents"><i class="fas fa-exclamation-triangle"></i> Incidents</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" data-page="alerts"><i class="fas fa-bell"></i> Alert Contacts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" data-page="integrations"><i class="fas fa-plug"></i> Integrations</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <button class="btn btn-outline btn-small" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="headerUptime">99.9%</span>
+                            <span class="stat-label">Uptime</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="headerMonitors">0</span>
+                            <span class="stat-label">Monitors</span>
+                        </div>
+                    </div>
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="content-page active">
+                <div class="page-container">
+                    <!-- Stats Overview -->
+                    <div class="stats-grid">
+                        <div class="stat-card success">
+                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="upMonitors">0</div>
+                                <div class="stat-label">Services en ligne</div>
+                            </div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="pausedMonitors">0</div>
+                                <div class="stat-label">Services en pause</div>
+                            </div>
+                        </div>
+                        <div class="stat-card danger">
+                            <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="downMonitors">0</div>
+                                <div class="stat-label">Services hors ligne</div>
+                            </div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="avgResponseTime">0ms</div>
+                                <div class="stat-label">Temps de réponse moyen</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-history"></i> Activité récente</h3>
+                            </div>
+                            <div class="activity-list" id="recentActivity">
+                                <div class="activity-item">
+                                    <div class="activity-icon success"><i class="fas fa-arrow-up"></i></div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Mon API Backend est de nouveau en ligne</div>
+                                        <div class="activity-time">Il y a 2 minutes</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon danger"><i class="fas fa-arrow-down"></i></div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Site Web principal hors ligne</div>
+                                        <div class="activity-time">Il y a 15 minutes</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-bar"></i> Statistiques 24h</h3>
+                            </div>
+                            <div class="stats-chart">
+                                <canvas id="uptimeChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monitors Overview -->
+                    <div class="monitors-overview">
+                        <div class="card-header">
+                            <h3><i class="fas fa-desktop"></i> Aperçu des monitors</h3>
+                            <button class="btn btn-primary" id="addMonitorBtn">
+                                <i class="fas fa-plus"></i> Ajouter un monitor
+                            </button>
+                        </div>
+                        <div class="monitors-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Status</th>
+                                        <th>Uptime</th>
+                                        <th>Dernière vérification</th>
+                                        <th>Temps de réponse</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="monitorsTableBody">
+                                    <tr>
+                                        <td colspan="6" class="empty-state">Aucun monitor configuré</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitors Page -->
+            <div id="monitorsPage" class="content-page">
+                <div class="page-container">
+                    <div class="page-header">
+                        <h2>Gestion des Monitors</h2>
+                        <button class="btn btn-primary" id="createMonitorBtn">
+                            <i class="fas fa-plus"></i> Nouveau Monitor
+                        </button>
+                    </div>
+
+                    <div class="filters-bar">
+                        <div class="filter-group">
+                            <select id="statusFilter">
+                                <option value="">Tous les statuts</option>
+                                <option value="up">En ligne</option>
+                                <option value="down">Hors ligne</option>
+                                <option value="paused">En pause</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <input type="search" id="searchMonitors" placeholder="Rechercher un monitor...">
+                        </div>
+                    </div>
+
+                    <div class="monitors-grid" id="monitorsGrid">
+                        <!-- Les monitors seront chargés dynamiquement -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Pages -->
+            <div id="statusPagesPage" class="content-page">
+                <div class="page-container">
+                    <div class="page-header">
+                        <h2>Pages de Statut</h2>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Créer une page
+                        </button>
+                    </div>
+                    
+                    <div class="status-pages-list">
+                        <div class="empty-state">
+                            <i class="fas fa-globe fa-3x"></i>
+                            <h3>Aucune page de statut</h3>
+                            <p>Créez une page de statut publique pour vos utilisateurs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="content-page">
+                <div class="page-container">
+                    <div class="settings-nav">
+                        <button class="settings-tab active" data-tab="profile">Profil</button>
+                        <button class="settings-tab" data-tab="notifications">Notifications</button>
+                        <button class="settings-tab" data-tab="billing">Facturation</button>
+                        <button class="settings-tab" data-tab="security">Sécurité</button>
+                    </div>
+
+                    <div class="settings-content">
+                        <div id="profileSettings" class="settings-panel active">
+                            <h3>Informations du profil</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>Nom complet</label>
+                                    <input type="text" id="profileName" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="profileEmail" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Fuseau horaire</label>
+                                    <select id="profileTimezone">
+                                        <option>Europe/Paris</option>
+                                        <option>UTC</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal - Nouveau Monitor -->
+    <div id="monitorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nouveau Monitor</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="monitorForm" class="modal-body">
+                <div class="form-group">
+                    <label>Nom du monitor</label>
+                    <input type="text" id="monitorName" placeholder="Ex: Mon site web" required>
+                </div>
+                <div class="form-group">
+                    <label>URL à surveiller</label>
+                    <input type="url" id="monitorUrl" placeholder="https://example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Type de monitor</label>
+                    <select id="monitorType">
+                        <option value="http">HTTP(s)</option>
+                        <option value="ping">Ping</option>
+                        <option value="port">Port</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Intervalle de vérification</label>
+                    <select id="monitorInterval">
+                        <option value="1">1 minute</option>
+                        <option value="5" selected>5 minutes</option>
+                        <option value="10">10 minutes</option>
+                        <option value="30">30 minutes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Contacts d'alerte</label>
+                    <div class="checkbox-group" id="alertContacts">
+                        <label><input type="checkbox" value="email"> Email principal</label>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+                <button type="submit" form="monitorForm" class="btn btn-primary">Créer le monitor</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="app.js"></script>
 </body>
 </html>

@@ -24,9 +24,12 @@
   "type": "commonjs",
   "dependencies": {
     "@vercel/kv": "^3.0.0",
+    "bcrypt": "^6.0.0",
     "ioredis": "^5.7.0",
+    "jsonwebtoken": "^9.0.2",
     "node-cron": "^4.2.1",
-    "redis": "^5.8.2"
+    "redis": "^5.8.2",
+    "validator": "^13.15.15"
   },
   "devDependencies": {
     "vercel": "^48.1.0"

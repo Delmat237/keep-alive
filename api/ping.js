@@ -1,8 +1,10 @@
-// api/ping.js - Version Redis native
 import { Redis } from 'ioredis';
+import jwt from 'jsonwebtoken';
 
-const SERVICES_KEY = 'keepalive:services';
+const MONITORS_KEY = 'keepalive:monitors';
 const STATS_KEY = 'keepalive:stats';
+const ACTIVITIES_KEY = 'keepalive:activities';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'; // Use environment variable in production
 
 let redis;
 
@@ -16,13 +18,13 @@ function getRedisClient() {
 // Configuration du ping
 const PING_CONFIG = {
     timeout: 25000,        // 25 secondes (limite Vercel: 30s)
-    userAgent: 'KeepAlive-Service-Vercel/1.0 (+https://keep-alive.vercel.app)',
+    userAgent: 'KeepAlive-Service-Vercel/1.0 (+https://keep-alive-olive.vercel.app)',
     maxRetries: 2,
     retryDelay: 1000
 };
 
 export default async function handler(req, res) {
-    // Configuration CORS
+    // CORS Configuration
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -38,34 +40,59 @@ export default async function handler(req, res) {
         });
     }
 
+    // Verify JWT
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({
+            success: false,
+            error: 'No token provided'
+        });
+    }
+
+    let decoded;
     try {
-        console.log('🚀 Démarrage du ping de tous les services');
+        decoded = jwt.verify(authHeader.split(' ')[1], JWT_SECRET);
+    } catch (error) {
+        return res.status(401).json({
+            success: false,
+            error: 'Invalid or expired token'
+        });
+    }
+
+    try {
+        console.log(`🚀 Démarrage du ping des services pour l'utilisateur ${decoded.userId}`);
         
         const client = getRedisClient();
         
-        // Récupération des services et statistiques
-        const [servicesData, statsData] = await Promise.all([
-            client.get(SERVICES_KEY),
+        // Récupération des moniteurs et statistiques
+        const [monitorsData, statsData] = await Promise.all([
+            client.get(MONITORS_KEY),
             client.get(STATS_KEY)
         ]);
 
-        const services = servicesData ? JSON.parse(servicesData) : [];
-        const stats = statsData ? JSON.parse(statsData) : { totalPings: 0, successfulPings: 0 };
+        const allMonitors = monitorsData ? JSON.parse(monitorsData) : [];
+        const userMonitors = allMonitors.filter(m => m.user_id === decoded.userId);
+        const allStats = statsData ? JSON.parse(statsData) : {};
+        const userStats = allStats[decoded.userId] || { totalPings: 0, successfulPings: 0, lastPingTime: null };
 
-        if (!services || services.length === 0) {
+        if (!userMonitors || userMonitors.length === 0) {
             return res.json({
                 success: true,
-                message: 'Aucun service à pinger',
+                message: 'Aucun service à pinger pour cet utilisateur',
                 results: [],
-                stats: stats
+                stats: userStats
             });
         }
 
-        console.log(`📊 ${services.length} services à pinger`);
+        console.log(`📊 ${userMonitors.length} services à pinger pour l'utilisateur ${decoded.userId}`);
+
+        // Récupération des activités existantes
+        const activitiesData = await client.get(ACTIVITIES_KEY);
+        const activities = activitiesData ? JSON.parse(activitiesData) : [];
 
         // Ping de tous les services en parallèle
-        const pingPromises = services.map(service => 
-            pingServiceWithRetry(service)
+        const pingPromises = userMonitors.map(monitor => 
+            pingServiceWithRetry(monitor, decoded.userId, activities)
         );
 
         const results = await Promise.allSettled(pingPromises);
@@ -76,7 +103,7 @@ export default async function handler(req, res) {
         let totalCount = 0;
 
         for (let i = 0; i < results.length; i++) {
-            const service = services[i];
+            const monitor = userMonitors[i];
             const result = results[i];
             
             totalCount++;
@@ -85,50 +112,91 @@ export default async function handler(req, res) {
                 const pingResult = result.value;
                 pingResults.push(pingResult);
 
-                // Mise à jour du service
+                // Mise à jour du moniteur
                 if (pingResult.success) {
                     successCount++;
-                    service.lastPing = new Date().toISOString();
-                    service.status = 'active';
-                    service.errorCount = Math.max(0, (service.errorCount || 0) - 1);
-                    service.responseTime = pingResult.responseTime;
+                    const previousStatus = monitor.status;
+                    monitor.last_check = new Date().toISOString();
+                    monitor.status = 'active';
+                    monitor.error_count = Math.max(0, (monitor.error_count || 0) - 1);
+                    monitor.response_time = pingResult.responseTime;
+                    monitor.last_error = null;
+
+                    // Log activity if status changed
+                    if (previousStatus !== 'active') {
+                        activities.push({
+                            id: Date.now(),
+                            user_id: decoded.userId,
+                            type: 'up',
+                            message: `${monitor.name} is online`,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
                 } else {
-                    service.errorCount = (service.errorCount || 0) + 1;
-                    service.status = service.errorCount > 3 ? 'error' : 'warning';
-                    service.lastError = pingResult.error;
-                    service.lastErrorTime = new Date().toISOString();
+                    const previousStatus = monitor.status;
+                    monitor.error_count = (monitor.error_count || 0) + 1;
+                    monitor.status = monitor.error_count > 3 ? 'error' : 'warning';
+                    monitor.last_error = pingResult.error;
+                    monitor.last_error_time = new Date().toISOString();
+                    monitor.response_time = pingResult.responseTime;
+
+                    // Log activity if status changed
+                    if (previousStatus !== monitor.status) {
+                        activities.push({
+                            id: Date.now(),
+                            user_id: decoded.userId,
+                            type: 'down',
+                            message: `${monitor.name} is ${monitor.status === 'error' ? 'offline' : 'in warning state'}`,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
                 }
             } else {
                 // Erreur lors du ping
                 pingResults.push({
-                    service: service.name,
+                    service: monitor.name,
                     success: false,
                     error: 'Erreur interne lors du ping'
                 });
 
-                service.errorCount = (service.errorCount || 0) + 1;
-                service.status = 'error';
-                service.lastError = result.reason?.message || 'Erreur inconnue';
-                service.lastErrorTime = new Date().toISOString();
+                const previousStatus = monitor.status;
+                monitor.error_count = (monitor.error_count || 0) + 1;
+                monitor.status = 'error';
+                monitor.last_error = result.reason?.message || 'Erreur inconnue';
+                monitor.last_error_time = new Date().toISOString();
+
+                // Log activity if status changed
+                if (previousStatus !== 'error') {
+                    activities.push({
+                        id: Date.now(),
+                        user_id: decoded.userId,
+                        type: 'down',
+                        message: `${monitor.name} is offline`,
+                        timestamp: new Date().toISOString()
+                    });
+                }
             }
         }
 
-        // Mise à jour des statistiques globales
+        // Mise à jour des statistiques globales pour l'utilisateur
         const updatedStats = {
-            totalPings: stats.totalPings + totalCount,
-            successfulPings: stats.successfulPings + successCount,
+            totalPings: userStats.totalPings + totalCount,
+            successfulPings: userStats.successfulPings + successCount,
             lastPingTime: new Date().toISOString(),
             lastPingCount: totalCount,
             lastSuccessCount: successCount
         };
 
+        allStats[decoded.userId] = updatedStats;
+
         // Sauvegarde en parallèle
         await Promise.all([
-            client.set(SERVICES_KEY, JSON.stringify(services)),
-            client.set(STATS_KEY, JSON.stringify(updatedStats))
+            client.set(MONITORS_KEY, JSON.stringify(allMonitors)),
+            client.set(STATS_KEY, JSON.stringify(allStats)),
+            client.set(ACTIVITIES_KEY, JSON.stringify(activities))
         ]);
 
-        console.log(`✅ Ping terminé: ${successCount}/${totalCount} succès`);
+        console.log(`✅ Ping terminé pour l'utilisateur ${decoded.userId}: ${successCount}/${totalCount} succès`);
 
         return res.json({
             success: true,
@@ -150,7 +218,7 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error('❌ Erreur lors du ping global:', error);
+        console.error(`❌ Erreur lors du ping global pour l'utilisateur ${decoded.userId}:`, error);
         return res.status(500).json({
             success: false,
             error: 'Erreur interne lors du ping des services',
@@ -159,21 +227,18 @@ export default async function handler(req, res) {
     }
 }
 
-/**
- * Ping un service avec retry automatique
- */
-async function pingServiceWithRetry(service, attempt = 1) {
+async function pingServiceWithRetry(monitor, userId, activities, attempt = 1) {
     const startTime = Date.now();
     
     try {
-        console.log(`🔄 Ping ${service.name} (tentative ${attempt})`);
+        console.log(`🔄 Ping ${monitor.name} (tentative ${attempt}) pour l'utilisateur ${userId}`);
         
         // Configuration de la requête
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), PING_CONFIG.timeout);
         
-        const response = await fetch(service.url, {
-            method: 'HEAD', // Utilise HEAD pour économiser la bande passante
+        const response = await fetch(monitor.url, {
+            method: monitor.type === 'http' ? 'HEAD' : 'GET', // Use HEAD for HTTP, GET for others
             signal: controller.signal,
             headers: {
                 'User-Agent': PING_CONFIG.userAgent,
@@ -181,7 +246,6 @@ async function pingServiceWithRetry(service, attempt = 1) {
                 'Cache-Control': 'no-cache',
                 'Connection': 'close'
             },
-            // Désactiver le suivi des redirections pour éviter les timeouts
             redirect: 'manual'
         });
         
@@ -190,10 +254,10 @@ async function pingServiceWithRetry(service, attempt = 1) {
         
         // Considérer les redirections comme des succès
         if (response.ok || (response.status >= 300 && response.status < 400)) {
-            console.log(`✅ ${service.name}: OK (${response.status}) - ${responseTime}ms`);
+            console.log(`✅ ${monitor.name}: OK (${response.status}) - ${responseTime}ms`);
             
             return {
-                service: service.name,
+                service: monitor.name,
                 success: true,
                 responseCode: response.status,
                 responseTime: responseTime
@@ -207,10 +271,10 @@ async function pingServiceWithRetry(service, attempt = 1) {
         
         // Retry en cas d'erreur (sauf si c'est une erreur d'abort)
         if (attempt < PING_CONFIG.maxRetries && error.name !== 'AbortError') {
-            console.log(`⚠️ ${service.name}: Erreur, retry dans ${PING_CONFIG.retryDelay}ms`);
+            console.log(`⚠️ ${monitor.name}: Erreur, retry dans ${PING_CONFIG.retryDelay}ms`);
             
             await sleep(PING_CONFIG.retryDelay);
-            return pingServiceWithRetry(service, attempt + 1);
+            return pingServiceWithRetry(monitor, userId, activities, attempt + 1);
         }
         
         // Gestion spéciale des erreurs courantes
@@ -226,10 +290,10 @@ async function pingServiceWithRetry(service, attempt = 1) {
             errorMessage = 'Timeout de connexion';
         }
         
-        console.log(`❌ ${service.name}: ${errorMessage} (${responseTime}ms)`);
+        console.log(`❌ ${monitor.name}: ${errorMessage} (${responseTime}ms)`);
         
         return {
-            service: service.name,
+            service: monitor.name,
             success: false,
             error: errorMessage,
             responseTime: responseTime,
@@ -238,9 +302,6 @@ async function pingServiceWithRetry(service, attempt = 1) {
     }
 }
 
-/**
- * Fonction d'attente
- */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
