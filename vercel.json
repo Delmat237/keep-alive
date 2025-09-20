@@ -11,9 +11,7 @@
     { "src": "/app", "dest": "/public/index.html" },
     { "src": "/(.*)", "dest": "/public/login.html" }
   ],
-  "functions": {
-    "api/ping.js": { "maxDuration": 300 }
-  },
+ 
   "env": {
     "NODE_ENV": "production",
     "REDIS_URL": "@redis_url",
