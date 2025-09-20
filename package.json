@@ -9,12 +9,23 @@
     "build": "echo 'No build step needed'",
     "start": "vercel --prod"
   },
-  "keywords": [],
+   "keywords": [
+    "keep-alive",
+    "monitoring",
+    "ping",
+    "vercel",
+    "serverless",
+    "render",
+    "railway",
+    "heroku"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "node-cron": "^4.2.1"
+    "@vercel/kv": "^3.0.0",
+    "node-cron": "^4.2.1",
+    "redis": "^5.8.2"
   },
   "devDependencies": {
     "vercel": "^48.1.0"

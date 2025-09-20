@@ -6,7 +6,7 @@
  * Service de monitoring et ping automatique pour maintenir
  * les applications web actives sur les plateformes cloud.
  * 
- * @author Votre Nom
+ * @author ALD
  * @version 1.0.0
  */
 
