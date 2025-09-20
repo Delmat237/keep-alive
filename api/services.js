@@ -1,8 +1,17 @@
-// api/services.js - API de gestion des services
-import { kv } from '@vercel/kv';
+// api/services.js - Version Redis native
+import { Redis } from 'ioredis';
 
 const SERVICES_KEY = 'keepalive:services';
 const STATS_KEY = 'keepalive:stats';
+
+let redis;
+
+function getRedisClient() {
+    if (!redis) {
+        redis = new Redis(process.env.REDIS_URL);
+    }
+    return redis;
+}
 
 export default async function handler(req, res) {
     // Configuration CORS
@@ -22,8 +31,6 @@ export default async function handler(req, res) {
                 return await createService(req, res);
             case 'DELETE':
                 return await deleteService(req, res);
-            case 'PUT':
-                return await updateService(req, res);
             default:
                 return res.status(405).json({ 
                     success: false, 
@@ -44,8 +51,15 @@ export default async function handler(req, res) {
  */
 async function getServices(req, res) {
     try {
-        const services = await kv.get(SERVICES_KEY) || [];
-        const stats = await kv.get(STATS_KEY) || { totalPings: 0, successfulPings: 0 };
+        const client = getRedisClient();
+        
+        const [servicesData, statsData] = await Promise.all([
+            client.get(SERVICES_KEY),
+            client.get(STATS_KEY)
+        ]);
+        
+        const services = servicesData ? JSON.parse(servicesData) : [];
+        const stats = statsData ? JSON.parse(statsData) : { totalPings: 0, successfulPings: 0 };
         
         return res.json({ 
             success: true, 
@@ -77,8 +91,11 @@ async function createService(req, res) {
             });
         }
 
+        const client = getRedisClient();
+        
         // Récupération des services existants
-        const existingServices = await kv.get(SERVICES_KEY) || [];
+        const servicesData = await client.get(SERVICES_KEY);
+        const existingServices = servicesData ? JSON.parse(servicesData) : [];
 
         // Vérification des doublons
         const duplicate = existingServices.find(s => 
@@ -109,7 +126,7 @@ async function createService(req, res) {
         existingServices.push(newService);
         
         // Sauvegarde
-        await kv.set(SERVICES_KEY, existingServices);
+        await client.set(SERVICES_KEY, JSON.stringify(existingServices));
 
         console.log(`New service created: ${name} (${url})`);
         
@@ -141,8 +158,11 @@ async function deleteService(req, res) {
             });
         }
 
+        const client = getRedisClient();
+        
         // Récupération des services
-        const services = await kv.get(SERVICES_KEY) || [];
+        const servicesData = await client.get(SERVICES_KEY);
+        const services = servicesData ? JSON.parse(servicesData) : [];
         
         // Recherche du service
         const serviceIndex = services.findIndex(s => s.id === serviceId);
@@ -159,7 +179,7 @@ async function deleteService(req, res) {
         services.splice(serviceIndex, 1);
         
         // Sauvegarde
-        await kv.set(SERVICES_KEY, services);
+        await client.set(SERVICES_KEY, JSON.stringify(services));
 
         console.log(`Service deleted: ${serviceName} (ID: ${serviceId})`);
         
@@ -173,57 +193,6 @@ async function deleteService(req, res) {
         return res.status(500).json({ 
             success: false, 
             error: 'Failed to delete service' 
-        });
-    }
-}
-
-/**
- * Met à jour un service
- */
-async function updateService(req, res) {
-    try {
-        const serviceId = parseInt(req.query.id);
-        const updates = req.body;
-
-        if (!serviceId) {
-            return res.status(400).json({ 
-                success: false, 
-                error: 'Service ID is required' 
-            });
-        }
-
-        // Récupération des services
-        const services = await kv.get(SERVICES_KEY) || [];
-        
-        // Recherche du service
-        const serviceIndex = services.findIndex(s => s.id === serviceId);
-        if (serviceIndex === -1) {
-            return res.status(404).json({ 
-                success: false, 
-                error: 'Service not found' 
-            });
-        }
-
-        // Mise à jour
-        services[serviceIndex] = {
-            ...services[serviceIndex],
-            ...updates,
-            updatedAt: new Date().toISOString()
-        };
-
-        // Sauvegarde
-        await kv.set(SERVICES_KEY, services);
-
-        return res.json({ 
-            success: true, 
-            data: services[serviceIndex] 
-        });
-
-    } catch (error) {
-        console.error('Error updating service:', error);
-        return res.status(500).json({ 
-            success: false, 
-            error: 'Failed to update service' 
         });
     }
 }

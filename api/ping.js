@@ -1,8 +1,17 @@
-// api/ping.js - API de ping des services
-import { kv } from '@vercel/kv';
+// api/ping.js - Version Redis native
+import { Redis } from 'ioredis';
 
 const SERVICES_KEY = 'keepalive:services';
 const STATS_KEY = 'keepalive:stats';
+
+let redis;
+
+function getRedisClient() {
+    if (!redis) {
+        redis = new Redis(process.env.REDIS_URL);
+    }
+    return redis;
+}
 
 // Configuration du ping
 const PING_CONFIG = {
@@ -32,11 +41,16 @@ export default async function handler(req, res) {
     try {
         console.log('🚀 Démarrage du ping de tous les services');
         
+        const client = getRedisClient();
+        
         // Récupération des services et statistiques
-        const [services, stats] = await Promise.all([
-            kv.get(SERVICES_KEY) || [],
-            kv.get(STATS_KEY) || { totalPings: 0, successfulPings: 0 }
+        const [servicesData, statsData] = await Promise.all([
+            client.get(SERVICES_KEY),
+            client.get(STATS_KEY)
         ]);
+
+        const services = servicesData ? JSON.parse(servicesData) : [];
+        const stats = statsData ? JSON.parse(statsData) : { totalPings: 0, successfulPings: 0 };
 
         if (!services || services.length === 0) {
             return res.json({
@@ -110,8 +124,8 @@ export default async function handler(req, res) {
 
         // Sauvegarde en parallèle
         await Promise.all([
-            kv.set(SERVICES_KEY, services),
-            kv.set(STATS_KEY, updatedStats)
+            client.set(SERVICES_KEY, JSON.stringify(services)),
+            client.set(STATS_KEY, JSON.stringify(updatedStats))
         ]);
 
         console.log(`✅ Ping terminé: ${successCount}/${totalCount} succès`);
@@ -149,10 +163,10 @@ export default async function handler(req, res) {
  * Ping un service avec retry automatique
  */
 async function pingServiceWithRetry(service, attempt = 1) {
+    const startTime = Date.now();
+    
     try {
         console.log(`🔄 Ping ${service.name} (tentative ${attempt})`);
-        
-        const startTime = Date.now();
         
         // Configuration de la requête
         const controller = new AbortController();
@@ -229,38 +243,4 @@ async function pingServiceWithRetry(service, attempt = 1) {
  */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-/**
- * Fonction de nettoyage des anciennes données (appelée périodiquement)
- */
-export async function cleanupOldData() {
-    try {
-        const services = await kv.get(SERVICES_KEY) || [];
-        const now = Date.now();
-        const maxAge = 30 * 24 * 60 * 60 * 1000; // 30 jours
-        
-        let cleanedCount = 0;
-        
-        const cleanedServices = services.filter(service => {
-            const created = new Date(service.created).getTime();
-            const isOld = (now - created) > maxAge;
-            const hasRecentActivity = service.lastPing && 
-                (now - new Date(service.lastPing).getTime()) < (7 * 24 * 60 * 60 * 1000);
-            
-            if (isOld && !hasRecentActivity && service.status === 'error') {
-                cleanedCount++;
-                return false;
-            }
-            return true;
-        });
-        
-        if (cleanedCount > 0) {
-            await kv.set(SERVICES_KEY, cleanedServices);
-            console.log(`🧹 Nettoyage: ${cleanedCount} services inactifs supprimés`);
-        }
-        
-    } catch (error) {
-        console.error('Erreur lors du nettoyage:', error);
-    }
 }
